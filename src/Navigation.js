@@ -7,13 +7,38 @@ class Navigation extends Component {
         const {user} = this.props;
 
         return(
-            <div className="text-center mt-4">
-                <span className="text-secondary font-weight-bold pl-1">
-                Welcome {user}
-                </span>
-                ,
-                <a href="/" className="font-weight-bold text-primary pl-1">Logout</a>
+            <nav className="site-nav family-sans navbar navbar-expand bg-primary navbar-dark higher">
+            <div className="container-fluid">
+              <a href="/" className="navbar-brand">
+                <FaUsers className="mr-1" /> Meeting Log
+              </a>
+              <div className="navbar-nav ml-auto">
+                { user && (
+                    <a className="nav-item nav-link" href="/meetings">
+                        meetings
+                    </a>
+                )}
+                { !user && (
+                    <a className="nav-item nav-link" href="/login">
+                       log in
+                    </a>
+                )}
+
+                { !user && (
+                  <a className="nav-item nav-link" href="/register">
+                    register
+                  </a>
+                )}
+
+                { user && (
+                  <a className="nav-item nav-link" href="/login">
+                    log out
+                  </a>
+                )}
+
+              </div>
             </div>
+          </nav>
         );
     }
 }
