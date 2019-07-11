@@ -119,6 +119,8 @@ class App extends Component {
             path="/meetings" 
             meetings={this.state.meetings}
             addMeeting={this.addMeeting} 
+            userID={this.state.userID}
+
           />
           <Register path="/register" registerUser={this.registerUser} />
 
