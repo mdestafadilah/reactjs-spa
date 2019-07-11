@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import FormError from './FormError';
+import firebase from './Firebase';
 
 class Register extends Component {
 
@@ -8,11 +10,14 @@ class Register extends Component {
             displayName: '',
             email: '',
             passOne: '',
-            passTwo: ''
+            passTwo: '',
+            errorMessage: null
         };
 
         // menyatukan value handlechange ke state (this -> original object)
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     // method untuk melakukan event handle variable
@@ -21,13 +26,41 @@ class Register extends Component {
         const itemValue = e.target.value;
 
         // modified state
-        this.setState({ [itemName]: itemValue })
+        this.setState({ [itemName]: itemValue }, ()=> {
+            if(this.state.passOne !== this.state.passTwo) {
+                this.setState({errorMessage: 'Password not match'})
+            }else{
+                this.setState({errorMessage: null})
+            }
+        });
+    }
+
+    handleSubmit(e){
+        var registrationInfo = {
+            displayName: this.state.displayName,
+            email: this.state.email,
+            password: this.state.passOne
+        }
+        // stop behaviour form to load
+        e.preventDefault();
+        
+        // firebase object
+        firebase.auth().createUserWithEmailAndPassword(
+            registrationInfo.email,
+            registrationInfo.password
+        ).catch(error => {
+            if(error.message !== null) {
+                this.setState({errorMessage: error.message});
+            }else{
+                this.setState({errorMessage: null});
+            }
+        });
     }
 
     render(){
 
         return(
-        <form className="mt-3">
+        <form className="mt-3" onSubmit={this.handleSubmit}>
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-lg-8">
@@ -35,6 +68,9 @@ class Register extends Component {
                     <div className="card-body">
                       <h3 className="font-weight-light mb-3">Register</h3>
                       <div className="form-row">
+                          { this.state.errorMessage !== null ? (
+                              <FormError theMessage={this.state.errorMessage} />
+                          ) : null}
                         <section className="col-sm-12 form-group">
                           <label
                             className="form-control-label sr-only"
