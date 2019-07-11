@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router } from '@reach/router';
+import { Router, navigate } from '@reach/router';
 import firebase from './Firebase';
 
 /* IMPORT KOMPONEN DISINI */
@@ -16,7 +16,9 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      user: null
+      user: null,
+      displayName: null,
+      userID: null
     }
   }
 
@@ -29,18 +31,36 @@ class App extends Component {
     })
   }
 
+  // get global properties
+  registerUser = userName => {
+    // track user register
+    firebase.auth().onAuthStateChanged(FBUser => {
+      // update profile
+      FBUser.updateProfile({
+        displayName: userName
+      }).then(() => {
+        this.setState({
+          user: FBUser,
+          displayName: FBUser.displayName,
+          userID: FBUser.uid
+        });
+        navigate('/meetings');
+      })
+    })
+  }
+
 
   render(){
     return(
       <div>
         <Navigation user={this.state.user} />
-        { this.state.user && <Welcome user={this.state.user} /> }
+        { this.state.user && <Welcome user={this.state.displayName} /> }
 
         <Router>
           <Home path="/" user={this.state.user} />
-          <Login path="/login" user={this.state.user} />
-          <Meetings path="/meetings" user={this.state.user} />
-          <Register path="/register" user={this.state.user} />
+          <Login path="/login"  />
+          <Meetings path="/meetings"  />
+          <Register path="/register" registerUser={this.registerUser} />
 
         </Router>
       </div>
