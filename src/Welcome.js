@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from '@reach/router';
 
 class Welcome extends Component {
     render(){
 
-        const {userName} = this.props;
+        const {userName, logOutUser} = this.props;
 
         return(
             <div className="text-center mt-4">
@@ -11,7 +12,9 @@ class Welcome extends Component {
                 Welcome {userName}
                 </span>
                 ,
-                <a href="/" className="font-weight-bold text-primary pl-1">Logout</a>
+                <Link to="/login" className="font-weight-bold text-primary pl-1"
+                    onClick={e => logOutUser(e)}>
+                Logout</Link>
             </div>
         );
     }
