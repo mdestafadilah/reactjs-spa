@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from '@reach/router';
+
 
 class Home extends Component {
     render(){
@@ -25,26 +27,26 @@ class Home extends Component {
                   in, and picks random users to award giveaways. It's a
                   good example of a Single Page Application which includes
                   connection to a database and routing. It's a practical
-                  way to learn <a href="https://reactjs.org/">React</a>{' '} 
-                  with <a href="https://firebase.google.com">Firebase</a>.
+                  way to learn <Link to="https://reactjs.org/">Reac  </Link> {' '} 
+                  with <Link to="https://firebase.google.com">Firebas </Link>.
                 </p>
 
                 { user == null && (
                     <span>
-                        <a href="/register" className="btn btn-outline-primary mr-2">
+                        <Link to="/register" className="btn btn-outline-primary mr-2">
                         Register
-                        </a>
-                        <a href="/login" className="btn btn-outline-primary mr-2">
+                        </Link>
+                        <Link to="/login" className="btn btn-outline-primary mr-2">
                         Log In
-                        </a>
+                        </Link>
                     </span>
                 )}
 
                 { user && (
                     <span>
-                        <a href="/meetings" className="btn btn-primary">
+                        <Link to="/meetings" className="btn btn-primary">
                             Meetings
-                        </a>
+                        </Link>
                     </span>
                 )}
     
