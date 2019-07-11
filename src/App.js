@@ -29,7 +29,33 @@ class App extends Component {
           user: FBUser,
           displayName: FBUser.displayName,
           userID: FBUser.uid
-        })
+        });
+
+        const meetingsRef = firebase
+          .database()
+          .ref('meetings/'+FBUser.uid);
+
+          meetingsRef.on('value', snapshot => {
+            let meetings = snapshot.val(); console.log(meetings);
+            let meetingsList = [];
+
+            // extract
+            for(let item in meetings){
+              meetingsList.push({
+                meetingID: item,
+                meetingName: meetings[item].meetingName
+              });
+            }
+
+            this.setState({
+              meetings: meetingsList,
+              howManyMeetings: meetingsList.length
+            });
+
+          })
+
+      } else {
+        this.setState({user:null});
       }
     });
   }
